@@ -1,10 +1,9 @@
-import itemDetailMap from "./data/itemDetailMap.json";
-import enhancementLevelTotalMultiplierTable from "./data/enhancementLevelTotalBonusMultiplierTable.json";
+import { itemDetailMap, enhancementLevelTotalBonusMultiplierTable } from "../lib/dataLoader";
 
 class Equipment {
     constructor(hrid, enhancementLevel) {
         this.hrid = hrid;
-        let gameItem = itemDetailMap[this.hrid];
+        let gameItem = itemDetailMap()[this.hrid];
         if (!gameItem) {
             throw new Error("No equipment found for hrid: " + this.hrid);
         }
@@ -19,8 +18,8 @@ class Equipment {
     }
 
     getCombatStat(combatStat) {
-        let multiplier = enhancementLevelTotalMultiplierTable[this.enhancementLevel];
-        if(this.gameItem.equipmentDetail.combatStats[combatStat]) {
+        let multiplier = enhancementLevelTotalBonusMultiplierTable()[this.enhancementLevel];
+        if (this.gameItem.equipmentDetail.combatStats[combatStat]) {
             let enhancementBonus = this.gameItem.equipmentDetail.combatEnhancementBonuses[combatStat] || 0;
             let stat = this.gameItem.equipmentDetail.combatStats[combatStat] + multiplier * enhancementBonus;
             return stat;
@@ -40,7 +39,7 @@ class Equipment {
         return this.gameItem.equipmentDetail.combatStats.primaryTraining;
     }
 
-    getFocusTraining(){
+    getFocusTraining() {
         return this.gameItem.equipmentDetail.combatStats.focusTraining;
     }
 }

@@ -85,8 +85,8 @@ class CombatUtilities {
             default:
                 throw new Error("Unknown combat style: " + combatStyle);
         }
-
         let sourceDamageMultiplier = 1;
+
         let sourceResistance = 0;
         let sourcePenetration = 0;
         let targetResistance = 0;
@@ -142,11 +142,11 @@ class CombatUtilities {
         let bonusCritDamage = source.combatDetails.combatStats.criticalDamage;
 
         if (abilityEffect) {
-            sourceAccuracyRating *= (1 + abilityEffect.bonusAccuracyRatio);
+            sourceAccuracyRating *= 1 + abilityEffect.bonusAccuracyRatio;
         }
 
         if (source.isWeakened) {
-            sourceAccuracyRating = sourceAccuracyRating - (source.weakenPercentage * sourceAccuracyRating);
+            sourceAccuracyRating = sourceAccuracyRating - source.weakenPercentage * sourceAccuracyRating;
         }
 
         hitChance =
@@ -165,7 +165,9 @@ class CombatUtilities {
         let armorDamageRatioFlat = abilityEffect ? abilityEffect.armorDamageRatio * source.combatDetails.totalArmor : 0;
 
         let sourceMinDamage = sourceDamageMultiplier * (1 + baseDamageFlat + armorDamageRatioFlat);
-        let sourceMaxDamage = sourceDamageMultiplier * (baseDamageRatio * sourceAutoAttackMaxDamage + baseDamageFlat + armorDamageRatioFlat);
+        let sourceMaxDamage =
+            sourceDamageMultiplier *
+            (baseDamageRatio * sourceAutoAttackMaxDamage + baseDamageFlat + armorDamageRatioFlat);
 
         if (Math.random() < critChance) {
             sourceMaxDamage = sourceMaxDamage * (1 + bonusCritDamage);
@@ -174,12 +176,12 @@ class CombatUtilities {
         }
 
         let damageRoll = CombatUtilities.randomInt(sourceMinDamage, sourceMaxDamage);
-        damageRoll *= (1 + source.combatDetails.combatStats.taskDamage);
-        damageRoll *= (1 + target.combatDetails.combatStats.damageTaken);
+        damageRoll *= 1 + source.combatDetails.combatStats.taskDamage;
+        damageRoll *= 1 + target.combatDetails.combatStats.damageTaken;
         if (!abilityEffect) {
             damageRoll += damageRoll * source.combatDetails.combatStats.autoAttackDamage;
         } else {
-            damageRoll *= (1 + source.combatDetails.combatStats.abilityDamage);
+            damageRoll *= 1 + source.combatDetails.combatStats.abilityDamage;
         }
 
         let damageDone = 0;
@@ -205,7 +207,7 @@ class CombatUtilities {
         }
 
         if (targetThornPower > 0.0 && targetResistance > -99.0) {
-            let penetratedSourceResistance = sourceResistance
+            let penetratedSourceResistance = sourceResistance;
 
             if (sourceResistance > 0) {
                 penetratedSourceResistance = sourceResistance / (1 + targetPenetration);
@@ -220,11 +222,13 @@ class CombatUtilities {
             let sourceDamageTakenMultiplier = 1.0 + source.combatDetails.combatStats.damageTaken;
             let targetDamageMultiplier = targetTaskDamageMultiplier * sourceDamageTakenMultiplier;
 
-            let thornsDamageRoll = CombatUtilities.randomInt(1,
-                targetDamageMultiplier
-                * target.combatDetails.defensiveMaxDamage
-                * (1.0 + targetResistance / 100.0)
-                * targetThornPower);
+            let thornsDamageRoll = CombatUtilities.randomInt(
+                1,
+                targetDamageMultiplier *
+                    target.combatDetails.defensiveMaxDamage *
+                    (1.0 + targetResistance / 100.0) *
+                    targetThornPower,
+            );
 
             let mitigatedThornsDamage = Math.ceil(sourceDamageTakenRatio * thornsDamageRoll);
 
@@ -234,14 +238,16 @@ class CombatUtilities {
 
         let retaliationDamageDone = 0;
         if (target.combatDetails.combatStats.retaliation > 0) {
-            let retaliationHitChance = 
+            let retaliationHitChance =
                 Math.pow(target.combatDetails.smashAccuracyRating, 1.4) /
-                (Math.pow(target.combatDetails.smashAccuracyRating, 1.4) + Math.pow(source.combatDetails.smashEvasionRating, 1.4));
+                (Math.pow(target.combatDetails.smashAccuracyRating, 1.4) +
+                    Math.pow(source.combatDetails.smashEvasionRating, 1.4));
 
             if (retaliationHitChance > Math.random()) {
                 let sourceEffectiveArmor = source.combatDetails.totalArmor;
                 if (sourceEffectiveArmor > 0) {
-                    sourceEffectiveArmor = sourceEffectiveArmor / (1.0 + target.combatDetails.combatStats.armorPenetration);
+                    sourceEffectiveArmor =
+                        sourceEffectiveArmor / (1.0 + target.combatDetails.combatStats.armorPenetration);
                 }
 
                 let sourceDamageTakenRatio = 100.0 / (100.0 + sourceEffectiveArmor);
@@ -256,8 +262,12 @@ class CombatUtilities {
                 let premitigatedDamage = damageRoll;
                 premitigatedDamage = Math.min(premitigatedDamage, target.combatDetails.defensiveMaxDamage * 5);
 
-                let retaliationMinDamage = retaliationDamageMultiplier * target.combatDetails.combatStats.retaliation * premitigatedDamage;
-                let retaliationMaxDamage = retaliationDamageMultiplier * target.combatDetails.combatStats.retaliation * (target.combatDetails.defensiveMaxDamage + premitigatedDamage);
+                let retaliationMinDamage =
+                    retaliationDamageMultiplier * target.combatDetails.combatStats.retaliation * premitigatedDamage;
+                let retaliationMaxDamage =
+                    retaliationDamageMultiplier *
+                    target.combatDetails.combatStats.retaliation *
+                    (target.combatDetails.defensiveMaxDamage + premitigatedDamage);
 
                 let retaliationDamageRoll = CombatUtilities.randomInt(retaliationMinDamage, retaliationMaxDamage);
                 let mitigatedRetaliationDamage = Math.ceil(sourceDamageTakenRatio * retaliationDamageRoll);
@@ -282,7 +292,17 @@ class CombatUtilities {
             manaLeechMana = source.addManapoints(Math.floor(source.combatDetails.combatStats.manaLeech * damageDone));
         }
 
-        return { damageDone, didHit, thornDamageDone, thornType, retaliationDamageDone, lifeStealHeal, hpDrain, manaLeechMana, isCrit};
+        return {
+            damageDone,
+            didHit,
+            thornDamageDone,
+            thornType,
+            retaliationDamageDone,
+            lifeStealHeal,
+            hpDrain,
+            manaLeechMana,
+            isCrit,
+        };
     }
 
     static processHeal(source, abilityEffect, target) {

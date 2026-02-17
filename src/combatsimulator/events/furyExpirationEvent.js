@@ -5,7 +5,7 @@ class FuryExpirationEvent extends CombatEvent {
 
     constructor(time, furyAmount, source) {
         super(FuryExpirationEvent.type, time);
-        
+
         this.furyAmount = furyAmount;
         this.source = source;
     }

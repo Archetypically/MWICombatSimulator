@@ -1,4 +1,4 @@
-import combatTriggerDependencyDetailMap from "./data/combatTriggerDependencyDetailMap.json";
+import { combatTriggerDependencyDetailMap } from "../lib/dataLoader";
 
 class Trigger {
     constructor(dependencyHrid, conditionHrid, comparatorHrid, value = 0) {
@@ -15,7 +15,11 @@ class Trigger {
     }
 
     isActive(source, target, friendlies, enemies, currentTime) {
-        if (combatTriggerDependencyDetailMap[this.dependencyHrid].isSingleTarget) {
+        const dependencyDetail = combatTriggerDependencyDetailMap()[this.dependencyHrid];
+        if (!dependencyDetail) {
+            return false;
+        }
+        if (dependencyDetail.isSingleTarget) {
             return this.isActiveSingleTarget(source, target, currentTime);
         } else {
             return this.isActiveMultiTarget(friendlies, enemies, currentTime);
@@ -66,10 +70,14 @@ class Trigger {
                 dependencyValue = dependency.filter((unit) => unit.combatDetails.currentHitpoints <= 0).length;
                 break;
             case "/combat_trigger_conditions/lowest_hp_percentage":
-                dependencyValue = dependency.filter((unit) => unit.combatDetails.currentHitpoints > 0).reduce((prev, curr) => {
-                    let currentHpPercentage = curr.combatDetails.currentHitpoints / curr.combatDetails.maxHitpoints;
-                    return currentHpPercentage < prev ? currentHpPercentage : prev;
-                }, 2) * 100;
+                dependencyValue =
+                    dependency
+                        .filter((unit) => unit.combatDetails.currentHitpoints > 0)
+                        .reduce((prev, curr) => {
+                            let currentHpPercentage =
+                                curr.combatDetails.currentHitpoints / curr.combatDetails.maxHitpoints;
+                            return currentHpPercentage < prev ? currentHpPercentage : prev;
+                        }, 2) * 100;
                 break;
             default:
                 dependencyValue = dependency
@@ -137,7 +145,7 @@ class Trigger {
             case "/combat_trigger_conditions/enrage":
                 let buffPrefix = "/buff_uniques";
                 buffPrefix += this.conditionHrid.slice(this.conditionHrid.lastIndexOf("/"));
-                let buffs = Object.keys(source.combatBuffs).filter(buff => buff.startsWith(buffPrefix));
+                let buffs = Object.keys(source.combatBuffs).filter((buff) => buff.startsWith(buffPrefix));
                 return source.combatBuffs[buffs?.[0]];
             case "/combat_trigger_conditions/current_hp":
                 return source.combatDetails.currentHitpoints;

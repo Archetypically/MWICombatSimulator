@@ -1,0 +1,306 @@
+{
+    "player": {
+        "attackLevel": 34,
+        "magicLevel": 1,
+        "meleeLevel": 2,
+        "intelligenceLevel": 32,
+        "staminaLevel": 32,
+        "defenseLevel": 32,
+        "rangedLevel": 71,
+        "equipment": [
+            {
+                "itemLocationHrid": "/item_locations/body",
+                "itemHrid": "/items/beast_tunic",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/tailoring_tool",
+                "itemHrid": "/items/crimson_needle",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/hands",
+                "itemHrid": "/items/beast_bracers",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/enhancing_tool",
+                "itemHrid": "/items/burble_enhancer",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/main_hand",
+                "itemHrid": "/items/redwood_crossbow",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/earrings",
+                "itemHrid": "/items/earrings_of_rare_find",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/off_hand",
+                "itemHrid": "/items/redwood_shield",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/brewing_tool",
+                "itemHrid": "/items/rainbow_pot",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/neck",
+                "itemHrid": "/items/necklace_of_wisdom",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/milking_tool",
+                "itemHrid": "/items/rainbow_brush",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/foraging_tool",
+                "itemHrid": "/items/rainbow_shears",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/woodcutting_tool",
+                "itemHrid": "/items/rainbow_hatchet",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/crafting_tool",
+                "itemHrid": "/items/rainbow_chisel",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/legs",
+                "itemHrid": "/items/beast_chaps",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/feet",
+                "itemHrid": "/items/beast_boots",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/ring",
+                "itemHrid": "/items/ring_of_rare_find",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/charm",
+                "itemHrid": "/items/basic_attack_charm",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/cheesesmithing_tool",
+                "itemHrid": "/items/rainbow_hammer",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/cooking_tool",
+                "itemHrid": "/items/rainbow_spatula",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/alchemy_tool",
+                "itemHrid": "/items/crimson_alembic",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/head",
+                "itemHrid": "/items/beast_hood",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/pouch",
+                "itemHrid": "/items/giant_pouch",
+                "enhancementLevel": 0
+            },
+            {
+                "itemLocationHrid": "/item_locations/trinket",
+                "itemHrid": "/items/basic_task_badge",
+                "enhancementLevel": 0
+            }
+        ]
+    },
+    "food": {
+        "/action_types/combat": [
+            {
+                "itemHrid": "/items/mooberry_cake"
+            },
+            {
+                "itemHrid": "/items/peach_yogurt"
+            },
+            {
+                "itemHrid": "/items/mooberry_donut"
+            },
+            {
+                "itemHrid": ""
+            }
+        ]
+    },
+    "drinks": {
+        "/action_types/combat": [
+            {
+                "itemHrid": "/items/ranged_coffee"
+            },
+            {
+                "itemHrid": "/items/attack_coffee"
+            },
+            {
+                "itemHrid": "/items/swiftness_coffee"
+            },
+            {
+                "itemHrid": ""
+            }
+        ]
+    },
+    "abilities": [
+        {
+            "abilityHrid": "",
+            "level": "1"
+        },
+        {
+            "abilityHrid": "/abilities/quick_shot",
+            "level": 32
+        },
+        {
+            "abilityHrid": "/abilities/rain_of_arrows",
+            "level": 13
+        },
+        {
+            "abilityHrid": "",
+            "level": "1"
+        },
+        {
+            "abilityHrid": "",
+            "level": "1"
+        }
+    ],
+    "triggerMap": {
+        "/abilities/quick_shot": [
+            {
+                "dependencyHrid": "/combat_trigger_dependencies/targeted_enemy",
+                "conditionHrid": "/combat_trigger_conditions/current_hp",
+                "comparatorHrid": "/combat_trigger_comparators/greater_than_equal",
+                "value": 1
+            }
+        ],
+        "/abilities/rain_of_arrows": [
+            {
+                "dependencyHrid": "/combat_trigger_dependencies/all_enemies",
+                "conditionHrid": "/combat_trigger_conditions/number_of_active_units",
+                "comparatorHrid": "/combat_trigger_comparators/greater_than_equal",
+                "value": 1
+            },
+            {
+                "dependencyHrid": "/combat_trigger_dependencies/all_enemies",
+                "conditionHrid": "/combat_trigger_conditions/current_hp",
+                "comparatorHrid": "/combat_trigger_comparators/greater_than_equal",
+                "value": 1
+            }
+        ],
+        "/items/attack_coffee": [
+            {
+                "dependencyHrid": "/combat_trigger_dependencies/self",
+                "conditionHrid": "/combat_trigger_conditions/attack_coffee",
+                "comparatorHrid": "/combat_trigger_comparators/is_inactive",
+                "value": 0
+            }
+        ],
+        "/items/mooberry_cake": [
+            {
+                "dependencyHrid": "/combat_trigger_dependencies/self",
+                "conditionHrid": "/combat_trigger_conditions/missing_hp",
+                "comparatorHrid": "/combat_trigger_comparators/greater_than_equal",
+                "value": 250
+            }
+        ],
+        "/items/mooberry_donut": [
+            {
+                "dependencyHrid": "/combat_trigger_dependencies/self",
+                "conditionHrid": "/combat_trigger_conditions/missing_hp",
+                "comparatorHrid": "/combat_trigger_comparators/greater_than_equal",
+                "value": 200
+            }
+        ],
+        "/items/peach_yogurt": [
+            {
+                "dependencyHrid": "/combat_trigger_dependencies/self",
+                "conditionHrid": "/combat_trigger_conditions/missing_mp",
+                "comparatorHrid": "/combat_trigger_comparators/greater_than_equal",
+                "value": 250
+            }
+        ],
+        "/items/ranged_coffee": [
+            {
+                "dependencyHrid": "/combat_trigger_dependencies/self",
+                "conditionHrid": "/combat_trigger_conditions/ranged_coffee",
+                "comparatorHrid": "/combat_trigger_comparators/is_inactive",
+                "value": 0
+            }
+        ],
+        "/items/swiftness_coffee": [
+            {
+                "dependencyHrid": "/combat_trigger_dependencies/self",
+                "conditionHrid": "/combat_trigger_conditions/swiftness_coffee",
+                "comparatorHrid": "/combat_trigger_comparators/is_inactive",
+                "value": 0
+            }
+        ]
+    },
+    "houseRooms": {
+        "/house_rooms/brewery": 1,
+        "/house_rooms/dairy_barn": 1,
+        "/house_rooms/dojo": 1,
+        "/house_rooms/forge": 1,
+        "/house_rooms/laboratory": 1,
+        "/house_rooms/log_shed": 1,
+        "/house_rooms/observatory": 1,
+        "/house_rooms/workshop": 1
+    },
+    "achievements": {
+        "/achievements/gather_milk": true,
+        "/achievements/bestiary_points_200": false,
+        "/achievements/learn_ability": true,
+        "/achievements/bestiary_points_20": true,
+        "/achievements/complete_tutorial": true,
+        "/achievements/task_tokens_10": true,
+        "/achievements/total_level_1000": false,
+        "/achievements/total_level_1800": false,
+        "/achievements/collection_points_100": true,
+        "/achievements/collection_points_1000": true,
+        "/achievements/equip_ginkgo_weapon": true,
+        "/achievements/defeat_gobo_chieftain": true,
+        "/achievements/total_level_250": true,
+        "/achievements/collection_points_2000": false,
+        "/achievements/bestiary_points_40": true,
+        "/achievements/defeat_jerry": true,
+        "/achievements/cook_apple_gummy": true,
+        "/achievements/coinify_coins_1m": false,
+        "/achievements/cheesesmith_azure_tool": true,
+        "/achievements/defeat_marine_huntress": true,
+        "/achievements/total_level_1500": false,
+        "/achievements/bestiary_points_100": true,
+        "/achievements/tailor_medium_pouch": true,
+        "/achievements/enhance_to_3": true,
+        "/achievements/craft_jewelry": true,
+        "/achievements/defeat_shoebill": true,
+        "/achievements/decompose_bamboo_gloves": true,
+        "/achievements/enhance_to_6": true,
+        "/achievements/total_level_100": true,
+        "/achievements/total_level_500": true,
+        "/achievements/collection_points_200": true,
+        "/achievements/bestiary_points_400": false,
+        "/achievements/craft_wooden_bow": true,
+        "/achievements/build_room_level_1": true,
+        "/achievements/brew_gourmet_tea": true,
+        "/achievements/defeat_luna_empress": true,
+        "/achievements/collection_points_500": true,
+        "/achievements/cook_peach_yogurt": true,
+        "/achievements/buy_trainee_charm": true,
+        "/achievements/enhance_to_10": true
+    }
+}

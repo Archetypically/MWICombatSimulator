@@ -1,114 +1,112 @@
 import Buff from "./buff";
-import abilityDetailMap from "./data/abilityDetailMap.json";
+import { abilityDetailMap } from "../lib/dataLoader";
 import Trigger from "./trigger";
 
 const abilityFromCombatStat = {
-    "blaze":
-    {
-        "hrid": "/abilities/blaze",
-        "name": "Blaze",
-        "description": "",
-        "isSpecialAbility": false,
-        "manaCost": 0,
-        "cooldownDuration": 0,
-        "castDuration": 0,
-        "abilityEffects": [
+    blaze: {
+        hrid: "/abilities/blaze",
+        name: "Blaze",
+        description: "",
+        isSpecialAbility: false,
+        manaCost: 0,
+        cooldownDuration: 0,
+        castDuration: 0,
+        abilityEffects: [
             {
-                "targetType": "allEnemies",
-                "effectType": "/ability_effect_types/damage",
-                "combatStyleHrid": "/combat_styles/magic",
-                "damageType": "/damage_types/fire",
-                "baseDamageFlat": 0,
-                "baseDamageFlatLevelBonus": 0.0,
-                "baseDamageRatio": 0.3,
-                "baseDamageRatioLevelBonus": 0,
-                "bonusAccuracyRatio": 0,
-                "bonusAccuracyRatioLevelBonus": 0,
-                "damageOverTimeRatio": 0,
-                "damageOverTimeDuration": 0,
-                "armorDamageRatio": 0,
-                "armorDamageRatioLevelBonus": 0,
-                "hpDrainRatio": 0,
-                "pierceChance": 0,
-                "blindChance": 0,
-                "blindDuration": 0,
-                "silenceChance": 0,
-                "silenceDuration": 0,
-                "stunChance": 0,
-                "stunDuration": 0,
-                "spendHpRatio": 0,
-                "buffs": null
-            }
+                targetType: "allEnemies",
+                effectType: "/ability_effect_types/damage",
+                combatStyleHrid: "/combat_styles/magic",
+                damageType: "/damage_types/fire",
+                baseDamageFlat: 0,
+                baseDamageFlatLevelBonus: 0.0,
+                baseDamageRatio: 0.3,
+                baseDamageRatioLevelBonus: 0,
+                bonusAccuracyRatio: 0,
+                bonusAccuracyRatioLevelBonus: 0,
+                damageOverTimeRatio: 0,
+                damageOverTimeDuration: 0,
+                armorDamageRatio: 0,
+                armorDamageRatioLevelBonus: 0,
+                hpDrainRatio: 0,
+                pierceChance: 0,
+                blindChance: 0,
+                blindDuration: 0,
+                silenceChance: 0,
+                silenceDuration: 0,
+                stunChance: 0,
+                stunDuration: 0,
+                spendHpRatio: 0,
+                buffs: null,
+            },
         ],
-        "defaultCombatTriggers": [
+        defaultCombatTriggers: [
             {
-                "dependencyHrid": "/combat_trigger_dependencies/all_enemies",
-                "conditionHrid": "/combat_trigger_conditions/number_of_active_units",
-                "comparatorHrid": "/combat_trigger_comparators/greater_than_equal",
-                "value": 1
+                dependencyHrid: "/combat_trigger_dependencies/all_enemies",
+                conditionHrid: "/combat_trigger_conditions/number_of_active_units",
+                comparatorHrid: "/combat_trigger_comparators/greater_than_equal",
+                value: 1,
             },
             {
-                "dependencyHrid": "/combat_trigger_dependencies/all_enemies",
-                "conditionHrid": "/combat_trigger_conditions/current_hp",
-                "comparatorHrid": "/combat_trigger_comparators/greater_than_equal",
-                "value": 1
-            }
+                dependencyHrid: "/combat_trigger_dependencies/all_enemies",
+                conditionHrid: "/combat_trigger_conditions/current_hp",
+                comparatorHrid: "/combat_trigger_comparators/greater_than_equal",
+                value: 1,
+            },
         ],
     },
-    "bloom":
-    {
-        "hrid": "/abilities/bloom",
-        "name": "Bloom",
-        "description": "",
-        "isSpecialAbility": false,
-        "manaCost": 0,
-        "cooldownDuration": 0,
-        "castDuration": 0,
-        "abilityEffects": [
+    bloom: {
+        hrid: "/abilities/bloom",
+        name: "Bloom",
+        description: "",
+        isSpecialAbility: false,
+        manaCost: 0,
+        cooldownDuration: 0,
+        castDuration: 0,
+        abilityEffects: [
             {
-                "targetType": "lowestHpAlly",
-                "effectType": "/ability_effect_types/heal",
-                "combatStyleHrid": "/combat_styles/magic",
-                "damageType": "",
-                "baseDamageFlat": 10,
-                "baseDamageFlatLevelBonus": 0,
-                "baseDamageRatio": 0.15,
-                "baseDamageRatioLevelBonus": 0,
-                "bonusAccuracyRatio": 0,
-                "bonusAccuracyRatioLevelBonus": 0,
-                "damageOverTimeRatio": 0,
-                "damageOverTimeDuration": 0,
-                "armorDamageRatio": 0,
-                "armorDamageRatioLevelBonus": 0,
-                "hpDrainRatio": 0,
-                "pierceChance": 0,
-                "blindChance": 0,
-                "blindDuration": 0,
-                "silenceChance": 0,
-                "silenceDuration": 0,
-                "stunChance": 0,
-                "stunDuration": 0,
-                "spendHpRatio": 0,
-                "buffs": null
-            }
+                targetType: "lowestHpAlly",
+                effectType: "/ability_effect_types/heal",
+                combatStyleHrid: "/combat_styles/magic",
+                damageType: "",
+                baseDamageFlat: 10,
+                baseDamageFlatLevelBonus: 0,
+                baseDamageRatio: 0.15,
+                baseDamageRatioLevelBonus: 0,
+                bonusAccuracyRatio: 0,
+                bonusAccuracyRatioLevelBonus: 0,
+                damageOverTimeRatio: 0,
+                damageOverTimeDuration: 0,
+                armorDamageRatio: 0,
+                armorDamageRatioLevelBonus: 0,
+                hpDrainRatio: 0,
+                pierceChance: 0,
+                blindChance: 0,
+                blindDuration: 0,
+                silenceChance: 0,
+                silenceDuration: 0,
+                stunChance: 0,
+                stunDuration: 0,
+                spendHpRatio: 0,
+                buffs: null,
+            },
         ],
-        "defaultCombatTriggers": [
+        defaultCombatTriggers: [
             {
-                "dependencyHrid": "/combat_trigger_dependencies/all_allies",
-                "conditionHrid": "/combat_trigger_conditions/lowest_hp_percentage",
-                "comparatorHrid": "/combat_trigger_comparators/less_than_equal",
-                "value": 100
-            }
+                dependencyHrid: "/combat_trigger_dependencies/all_allies",
+                conditionHrid: "/combat_trigger_conditions/lowest_hp_percentage",
+                comparatorHrid: "/combat_trigger_comparators/less_than_equal",
+                value: 100,
+            },
         ],
-    }
-}
+    },
+};
 
 class Ability {
     constructor(hrid, level = 1, triggers = null) {
         this.hrid = hrid;
         this.level = level;
 
-        let gameAbility = abilityDetailMap[hrid];
+        let gameAbility = abilityDetailMap()[hrid];
         if (!gameAbility) {
             gameAbility = abilityFromCombatStat[hrid];
         }
@@ -155,7 +153,7 @@ class Ability {
             this.abilityEffects.push(abilityEffect);
         }
 
-        if (triggers) {
+        if (triggers && triggers.length > 0) {
             this.triggers = triggers;
         } else {
             this.triggers = [];
@@ -164,7 +162,7 @@ class Ability {
                     defaultTrigger.dependencyHrid,
                     defaultTrigger.conditionHrid,
                     defaultTrigger.comparatorHrid,
-                    defaultTrigger.value
+                    defaultTrigger.value,
                 );
                 this.triggers.push(trigger);
             }
@@ -174,7 +172,10 @@ class Ability {
     }
 
     static createFromDTO(dto) {
-        let triggers = dto.triggers.map((trigger) => Trigger.createFromDTO(trigger));
+        let triggers =
+            dto.triggers && dto.triggers.length > 0
+                ? dto.triggers.map((trigger) => Trigger.createFromDTO(trigger))
+                : null;
         let ability = new Ability(dto.hrid, dto.level, triggers);
 
         return ability;
@@ -192,7 +193,7 @@ class Ability {
         let haste = source.combatDetails.combatStats.abilityHaste;
         let cooldownDuration = this.cooldownDuration;
         if (haste > 0) {
-            cooldownDuration = cooldownDuration * 100 / (100 + haste);
+            cooldownDuration = (cooldownDuration * 100) / (100 + haste);
         }
 
         if (this.lastUsed + cooldownDuration > currentTime) {

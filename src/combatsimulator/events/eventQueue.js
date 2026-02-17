@@ -50,15 +50,15 @@ class EventQueue {
     }
 
     getMatching(fn) {
-        let heapEvents = this.minHeap.toArray(); 
-    
+        let heapEvents = this.minHeap.toArray();
+
         for (const event of heapEvents) {
             if (fn(event)) {
-                return event; 
+                return event;
             }
         }
-    
-        return null; 
+
+        return null;
     }
 }
 

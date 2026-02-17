@@ -17,6 +17,10 @@ class Player extends CombatUnit {
         "/equipment_types/off_hand": null,
         "/equipment_types/pouch": null,
         "/equipment_types/back": null,
+        "/equipment_types/neck": null,
+        "/equipment_types/ring": null,
+        "/equipment_types/earrings": null,
+        "/equipment_types/charm": null,
     };
 
     constructor() {
@@ -46,9 +50,9 @@ class Player extends CombatUnit {
         player.food = dto.food.map((food) => (food ? Consumable.createFromDTO(food) : null));
         player.drinks = dto.drinks.map((drink) => (drink ? Consumable.createFromDTO(drink) : null));
         player.abilities = dto.abilities.map((ability) => (ability ? Ability.createFromDTO(ability) : null));
-        Object.entries(dto.houseRooms).forEach(houseRoom => {
+        Object.entries(dto.houseRooms).forEach((houseRoom) => {
             if (houseRoom[1] > 0) {
-                player.houseRooms.push(new HouseRoom(houseRoom[0], houseRoom[1]))
+                player.houseRooms.push(new HouseRoom(houseRoom[0], houseRoom[1]));
             }
         });
 
@@ -66,7 +70,7 @@ class Player extends CombatUnit {
             this.combatDetails.combatStats.damageType = this.equipment["/equipment_types/main_hand"].getDamageType();
             this.combatDetails.combatStats.attackInterval =
                 this.equipment["/equipment_types/main_hand"].getCombatStat("attackInterval");
-            this.combatDetails.combatStats.primaryTraining = 
+            this.combatDetails.combatStats.primaryTraining =
                 this.equipment["/equipment_types/main_hand"].getPrimaryTraining();
         } else if (this.equipment["/equipment_types/two_hand"]) {
             this.combatDetails.combatStats.combatStyleHrid =
@@ -74,7 +78,7 @@ class Player extends CombatUnit {
             this.combatDetails.combatStats.damageType = this.equipment["/equipment_types/two_hand"].getDamageType();
             this.combatDetails.combatStats.attackInterval =
                 this.equipment["/equipment_types/two_hand"].getCombatStat("attackInterval");
-            this.combatDetails.combatStats.primaryTraining = 
+            this.combatDetails.combatStats.primaryTraining =
                 this.equipment["/equipment_types/two_hand"].getPrimaryTraining();
         } else {
             this.combatDetails.combatStats.combatStyleHrid = "/combat_styles/smash";
@@ -159,7 +163,7 @@ class Player extends CombatUnit {
             "meleeExperience",
             "rangedExperience",
             "magicExperience",
-            "retaliation"
+            "retaliation",
         ].forEach((stat) => {
             this.combatDetails.combatStats[stat] = Object.values(this.equipment)
                 .filter((equipment) => equipment != null)

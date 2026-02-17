@@ -1,4 +1,4 @@
-import combatStyleDetailMap from "./data/combatStyleDetailMap.json"
+import { combatStyleDetailMap } from "../lib/dataLoader";
 
 class SimResult {
     constructor(zone, numberOfPlayers) {
@@ -14,11 +14,11 @@ class SimResult {
         this.rareFindMultiplier = {};
         this.combatDropQuantity = {};
         this.playerRanOutOfMana = {
-            "player1": false,
-            "player2": false,
-            "player3": false,
-            "player4": false,
-            "player5": false
+            player1: false,
+            player2: false,
+            player3: false,
+            player4: false,
+            player5: false,
         };
         this.playerRanOutOfManaTime = {};
         this.manaUsed = {};
@@ -38,11 +38,11 @@ class SimResult {
         this.lastEncounterFinishTime = 0;
 
         this.wipeEvents = [];
-        
+
         // 时间序列数据用于图表显示
         this.timeSeriesData = {
             timestamps: [],
-            players: {}
+            players: {},
         };
     }
 
@@ -51,10 +51,10 @@ class SimResult {
             simulationTime: simulationTime,
             logs: logs,
             wave: wave,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
         });
     }
-    
+
     addDeath(unit) {
         if (!this.deaths[unit.hrid]) {
             this.deaths[unit.hrid] = 0;
@@ -64,7 +64,7 @@ class SimResult {
     }
 
     updateTimeSpentAlive(name, alive, time) {
-        const i = this.timeSpentAlive.findIndex(e => e.name === name);
+        const i = this.timeSpentAlive.findIndex((e) => e.name === name);
         if (alive) {
             if (i !== -1) {
                 this.timeSpentAlive[i].alive = true;
@@ -81,7 +81,7 @@ class SimResult {
     }
 
     updateDungenonFinish(beginFlag, finishTime) {
-        const i = this.timeSpentAlive.findIndex(e => e.name === beginFlag); 
+        const i = this.timeSpentAlive.findIndex((e) => e.name === beginFlag);
         if (i == -1) {
             return;
         }
@@ -111,27 +111,27 @@ class SimResult {
         }
 
         let experienceGainedRate = {
-            "stamina": 0,
-            "intelligence": 0,
-            "attack": 0,
-            "melee": 0,
-            "defense": 0,
-            "ranged": 0,
-            "magic": 0,
+            stamina: 0,
+            intelligence: 0,
+            attack: 0,
+            melee: 0,
+            defense: 0,
+            ranged: 0,
+            magic: 0,
         };
 
         const primaryTraining = unit.combatDetails.combatStats.primaryTraining;
-        experienceGainedRate[primaryTraining.split("/")[2]] = .3;
+        experienceGainedRate[primaryTraining.split("/")[2]] = 0.3;
 
-        const skillExpMap = combatStyleDetailMap[unit.combatDetails.combatStats.combatStyleHrid].skillExpMap;
+        const skillExpMap = combatStyleDetailMap()[unit.combatDetails.combatStats.combatStyleHrid].skillExpMap;
         const skillExpMapLength = Object.keys(skillExpMap).length;
 
         const focusTraining = unit.combatDetails.combatStats.focusTraining;
         if (focusTraining && skillExpMap[focusTraining]) {
-            experienceGainedRate[focusTraining.split("/")[2]] += .7;
+            experienceGainedRate[focusTraining.split("/")[2]] += 0.7;
         } else {
-            Object.keys(skillExpMap).forEach(skillHrid => {
-                experienceGainedRate[skillHrid.split("/")[2]] += .7 / skillExpMapLength;
+            Object.keys(skillExpMap).forEach((skillHrid) => {
+                experienceGainedRate[skillHrid.split("/")[2]] += 0.7 / skillExpMapLength;
             });
         }
 
@@ -140,13 +140,11 @@ class SimResult {
 
             const skillExperience = rate * (1 + unit.combatDetails.combatStats[type + "Experience"]);
 
-            this.experienceGained[unit.hrid][type] += (
-                experience
-                * (1 + unit.combatDetails.combatStats.combatExperience)
-                * skillExperience
-                * (1 + unit.debuffOnLevelGap)
-
-            );
+            this.experienceGained[unit.hrid][type] +=
+                experience *
+                (1 + unit.combatDetails.combatStats.combatExperience) *
+                skillExperience *
+                (1 + unit.debuffOnLevelGap);
         }
     }
 
@@ -249,7 +247,11 @@ class SimResult {
         if (isOutOfMana) this.playerRanOutOfMana[unit.hrid] = true;
 
         if (!this.playerRanOutOfManaTime[unit.hrid]) {
-            this.playerRanOutOfManaTime[unit.hrid] = {isOutOfMana: false, startTimeForOutOfMana:0, totalTimeForOutOfMana:0};
+            this.playerRanOutOfManaTime[unit.hrid] = {
+                isOutOfMana: false,
+                startTimeForOutOfMana: 0,
+                totalTimeForOutOfMana: 0,
+            };
         }
 
         if (isOutOfMana) {
@@ -260,7 +262,8 @@ class SimResult {
         } else {
             if (this.playerRanOutOfManaTime[unit.hrid].isOutOfMana) {
                 this.playerRanOutOfManaTime[unit.hrid].isOutOfMana = false;
-                this.playerRanOutOfManaTime[unit.hrid].totalTimeForOutOfMana += time - this.playerRanOutOfManaTime[unit.hrid].startTimeForOutOfMana;
+                this.playerRanOutOfManaTime[unit.hrid].totalTimeForOutOfMana +=
+                    time - this.playerRanOutOfManaTime[unit.hrid].startTimeForOutOfMana;
             }
         }
     }
@@ -268,17 +271,17 @@ class SimResult {
     // 添加时间序列数据点
     addTimeSeriesSnapshot(time, players) {
         this.timeSeriesData.timestamps.push(time);
-        
-        players.forEach(player => {
+
+        players.forEach((player) => {
             if (!this.timeSeriesData.players[player.hrid]) {
                 this.timeSeriesData.players[player.hrid] = {
                     hp: [],
                     mp: [],
                     maxHp: [],
-                    maxMp: []
+                    maxMp: [],
                 };
             }
-            
+
             const playerData = this.timeSeriesData.players[player.hrid];
             playerData.hp.push(player.combatDetails.currentHitpoints);
             playerData.mp.push(player.combatDetails.currentManapoints);

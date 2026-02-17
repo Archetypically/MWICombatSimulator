@@ -6,10 +6,7 @@ class WeakenExpirationEvent extends CombatEvent {
 
     constructor(time, weakenAmount, source) {
         super(WeakenExpirationEvent.type, time);
-        this.weakenAmount = Math.min(
-            weakenAmount + 1,
-            WeakenExpirationEvent.maxWeakenStacks
-        );
+        this.weakenAmount = Math.min(weakenAmount + 1, WeakenExpirationEvent.maxWeakenStacks);
         this.source = source;
     }
 }

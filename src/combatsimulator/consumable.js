@@ -1,12 +1,12 @@
 import Buff from "./buff";
-import itemDetailMap from "./data/itemDetailMap.json";
+import { itemDetailMap } from "../lib/dataLoader";
 import Trigger from "./trigger";
 
 class Consumable {
     constructor(hrid, triggers = null) {
         this.hrid = hrid;
 
-        let gameConsumable = itemDetailMap[this.hrid];
+        let gameConsumable = itemDetailMap()[this.hrid];
         if (!gameConsumable) {
             throw new Error("No consumable found for hrid: " + this.hrid);
         }
@@ -15,7 +15,7 @@ class Consumable {
         this.hitpointRestore = gameConsumable.consumableDetail.hitpointRestore;
         this.manapointRestore = gameConsumable.consumableDetail.manapointRestore;
         this.recoveryDuration = gameConsumable.consumableDetail.recoveryDuration;
-        this.catagoryHrid = gameConsumable.categoryHrid;
+        this.categoryHrid = gameConsumable.categoryHrid;
 
         this.buffs = [];
         if (gameConsumable.consumableDetail.buffs) {
@@ -25,26 +25,31 @@ class Consumable {
             }
         }
 
-        if (triggers) {
+        if (triggers && triggers.length > 0) {
             this.triggers = triggers;
-        } else {
+        } else if (gameConsumable.consumableDetail.defaultCombatTriggers) {
             this.triggers = [];
             for (const defaultTrigger of gameConsumable.consumableDetail.defaultCombatTriggers) {
                 let trigger = new Trigger(
                     defaultTrigger.dependencyHrid,
                     defaultTrigger.conditionHrid,
                     defaultTrigger.comparatorHrid,
-                    defaultTrigger.value
+                    defaultTrigger.value,
                 );
                 this.triggers.push(trigger);
             }
+        } else {
+            this.triggers = [];
         }
 
         this.lastUsed = Number.MIN_SAFE_INTEGER;
     }
 
     static createFromDTO(dto) {
-        let triggers = dto.triggers.map((trigger) => Trigger.createFromDTO(trigger));
+        let triggers =
+            dto.triggers && dto.triggers.length > 0
+                ? dto.triggers.map((trigger) => Trigger.createFromDTO(trigger))
+                : null;
         let consumable = new Consumable(dto.hrid, triggers);
 
         return consumable;
@@ -55,8 +60,8 @@ class Consumable {
             return false;
         }
         let consumableHaste;
-        if (this.catagoryHrid.includes("food")) {
-            consumableHaste = source.combatDetails.combatStats.foodHaste
+        if (this.categoryHrid.includes("food")) {
+            consumableHaste = source.combatDetails.combatStats.foodHaste;
         } else {
             consumableHaste = source.combatDetails.combatStats.drinkConcentration;
         }
@@ -75,7 +80,13 @@ class Consumable {
 
         let shouldTrigger = true;
         for (const trigger of this.triggers) {
-            if (!trigger.isActive(source, target, friendlies, enemies, currentTime)) {
+            let isActive;
+            try {
+                isActive = trigger.isActive(source, target, friendlies, enemies, currentTime);
+            } catch (e) {
+                isActive = false;
+            }
+            if (!isActive) {
                 shouldTrigger = false;
             }
         }
